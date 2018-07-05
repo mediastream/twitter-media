@@ -101,11 +101,11 @@ module.exports = class APIClient {
         return new Promise((resolve, reject) => {
             const defaultParams = { url: this.endpoint, oauth: this.oauth, json: true, method: 'POST' };
             request(Object.assign(defaultParams, params), (error, response, body) => {
-                if (error) {reject(error)}
-                console.log(`TWITTER REQUEST: ${JSON.stringify(body)}`)
-                const isOK = response.statusCode >= 200 && response.statusCode < 300;
-                isOK ? resolve(body) : reject(new Error(`ERROR OCCURRED FETCHING DATA. RESPONSE: ${stringify(body)}`));
-            });
+                if (error || (response.statusCode >= 200 && response.statusCode < 300)) {
+                    reject(new Error(`${JSON.stringify({error: error, body: body})}`))
+                }
+                resolve(body)
+            })
         }).then((response) => {
             console.log(`TWITTER-MEDIA PROMISE HANDLER: ${JSON.stringify(response)}`)
             const error = extractError(response);
