@@ -107,10 +107,12 @@ module.exports = class APIClient {
                 isOK ? resolve(body) : reject(new Error(`ERROR OCCURRED FETCHING DATA. RESPONSE: ${stringify(body)}`));
             });
         }).then((response) => {
+            console.log(`TWITTER-MEDIA PROMISE HANDLER: ${JSON.stringify(response)}`)
             const error = extractError(response);
+            console.log(`TWITTER-MEDIA extractError RESULT: ${JSON.stringify(error)}`)
             return error ? Promise.reject(error) : response;
         }).catch((error)=>{
-            console.error(`TWITTER MEDIA _request ERROR:${JSON.stringify(error)}`)
+            console.error(`TWITTER-MEDIA _request ERROR:${JSON.stringify(error)}`)
             return Promise.reject(error)
         });
     }
