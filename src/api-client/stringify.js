@@ -8,8 +8,8 @@ function replaceBuffers(object) {
             if (Buffer.isBuffer(value)) {
                 const { data } = value.slice(0, 5).toJSON();
                 return `<Buffer ${data.map((byte) => byte.toString(16)).join(' ')} ...>`;
-            } else if (value === Object(value)) {
-                return replaceBuffers(value);
+            // } else if (value === Object(value)) {
+            //     return replaceBuffers(value);
             } else {
                 return value;
             }

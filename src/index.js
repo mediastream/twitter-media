@@ -12,7 +12,6 @@ module.exports = class MediaUpload {
             cb && cb(error);
             return Promise.reject(error);
         }
-
         return Promise.all(images.map((image) => this.uploadMedia('image', image))).then((results) => {
             cb && cb(null, results);
             return results;

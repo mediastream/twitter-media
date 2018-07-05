@@ -21,6 +21,8 @@ module.exports = class APIClient {
             return this._appendMedia(mediaID, buffer, chunkSize);
         }).then((mediaID) => {
             return this._finalizeUpload(mediaID);
+        }).catch((error) => {
+            return error
         });
     }
 
@@ -99,23 +101,24 @@ module.exports = class APIClient {
         return new Promise((resolve, reject) => {
             const defaultParams = { url: this.endpoint, oauth: this.oauth, json: true, method: 'POST' };
             request(Object.assign(defaultParams, params), (error, response, body) => {
+                if (error) {reject(error)}
                 const isOK = response.statusCode >= 200 && response.statusCode < 300;
-                isOK ? resolve(body) : reject(new Error(`Error occurred fetching with params: ${stringify(params)}. Response: ${stringify(response)}`));
+                isOK ? resolve(body) : reject(new Error(`ERROR OCCURRED FETCHING DATA. RESPONSE: ${stringify(body)}`));
             });
         }).then((response) => {
             const error = extractError(response);
             return error ? Promise.reject(error) : response;
+        }).catch((error)=>{
+            return Promise.reject(error)
         });
     }
 };
 
 function extractError(response) {
     const { error, errors = [] } = response || {};
-
     if (error) {
         return new Error(error);
     }
-
     if (errors.length > 0) {
         return new Error(errors[0]);
     }
