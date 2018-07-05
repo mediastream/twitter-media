@@ -102,7 +102,7 @@ module.exports = class APIClient {
             const defaultParams = { url: this.endpoint, oauth: this.oauth, json: true, method: 'POST' };
             request(Object.assign(defaultParams, params), (error, response, body) => {
                 if (error) {reject(error)}
-                console.log(`TWITTER REQUEST: ${body}`)
+                console.log(`TWITTER REQUEST: ${JSON.stringify(body)}`)
                 const isOK = response.statusCode >= 200 && response.statusCode < 300;
                 isOK ? resolve(body) : reject(new Error(`ERROR OCCURRED FETCHING DATA. RESPONSE: ${stringify(body)}`));
             });
@@ -110,6 +110,7 @@ module.exports = class APIClient {
             const error = extractError(response);
             return error ? Promise.reject(error) : response;
         }).catch((error)=>{
+            console.error(`TWITTER MEDIA _request ERROR:${JSON.stringify(error)}`)
             return Promise.reject(error)
         });
     }
