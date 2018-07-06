@@ -103,10 +103,9 @@ module.exports = class APIClient {
             request(Object.assign(defaultParams, params), (error, response, body) => {
                 console.log(` <<<< RESPONSE CODE TWITTER: ${response.statusCode} >>>>>>`)
                 if (error || !(response.statusCode >= 200 && response.statusCode < 300)) {
-                    const extractedError = extractError(body)
-                    console.log(`TWITTER-MEDIA extractError RESULT: ${JSON.stringify(extractedError)}`)
-                    // reject(new Error(`${JSON.stringify({error: error, body: body})}`))
-                    reject('PINGA')
+                    const errorMsg = `statusCode: ${response.statusCode} details: ${JSON.stringify(body)}`
+                    console.log(`errorMsg: ${errorMsg}`)
+                    reject(errorMsg)
                 }
                 resolve(body)
             })
