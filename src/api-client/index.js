@@ -101,16 +101,13 @@ module.exports = class APIClient {
         return new Promise((resolve, reject) => {
             const defaultParams = { url: this.endpoint, oauth: this.oauth, json: true, method: 'POST' };
             request(Object.assign(defaultParams, params), (error, response, body) => {
-                console.log(` <<<< RESPONSE CODE TWITTER: ${response.statusCode} >>>>>>`)
                 if (error || !(response.statusCode >= 200 && response.statusCode < 300)) {
                     const errorMsg = `statusCode: ${response.statusCode} details: ${JSON.stringify(body)}`
-                    console.log(`errorMsg: ${errorMsg}`)
                     reject(errorMsg)
                 }
                 resolve(body)
             })
         }).then((response) => {
-            console.log(`TWITTER-MEDIA PROMISE HANDLER: ${JSON.stringify(response)}`)
             return response;
         }).catch((error) => {
             console.error(`TWITTER-MEDIA _request ERROR:${JSON.stringify(error)}`)
